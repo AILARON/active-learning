@@ -11,6 +11,13 @@ python3 run.py --Strategy <Strategy name>
 
 
 
+## CIRAL framework
+
+![data flow](/images/ciral-framework-new.png)
+
+
+
+
 ## Screen session
 
 Screen session allows to detach terminal processes so that they continue when quitting the ssh-session. 
@@ -39,6 +46,6 @@ Ctrl+a, :sessionname <Screen Name>
 
 to kill a screen, must be attached to the screen
 ```
-Ctrl+A K then y
+Ctrl+A K, y
 ```
 
