@@ -1,8 +1,14 @@
 # Active learning core set approach
 
 
-To run
+#### To run
 
+Install dependencies with Anaconda
+```
+conda activate active-learning-env
+```
+
+Run active learning
 ```
 python3 run.py --Strategy <Strategy name>
 ```
