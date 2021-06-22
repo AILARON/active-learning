@@ -13,14 +13,26 @@ Run active learning
 python3 run.py --Strategy <Strategy name>
 ```
 
---Strategy parameter is optional, can also be specified in config.py
+The strategy parameter is optional and can also be specified in config.py
 
+| Strategy         | Command        |
+|------------------|----------------|
+| All data         | ALL-DATA       |
+| BADGE            | BADGE          |
+| CIRAL            | CIRAL          |
+| CORESET          | CORESET        |
+| DFAL             | DFAL           |
+| K-MEANS          | KMEANS         |
+| LEARNING LOSS    | LEARNING_LOSS  |
+| MAX ENTROPY      | MAX_ENTROPY    |
+| RANDOM BENCHMARK | RANDOM         |
+| SOFTMAX HYBRID   | SOFTMAX_HYBRID |
+| UNCERTAINTY      | UNCERTAINTY    |
 
 
 ## CIRAL framework
 
 ![data flow](/images/ciral-framework-new.png)
-
 
 
 
