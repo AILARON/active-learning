@@ -20,14 +20,19 @@ Run active learning
 python3 run.py --strategy <Strategy name> --dataset <Dataset name>
 ```
 
-e.g
-
+e.g to run the proposed CIRAL framework on the CIFAR-10 dataset, type the following command
 ```
 python3 run.py --strategy CIRAL --dataset CIFAR10
 ```
 
 The strategy and dataset parameter is optional and can also be specified in config.py
-The different strategies and datasets are listed below
+The different strategies and datasets are listed below. The Kaggle, AILARON and Pastore datasets needs to be separately downloaded. 
+The Kaggle is available with the command
+```
+kaggle competitions download -c datasciencebowl
+```
+The Pastore is available at https://ibm.box.com/v/PlanktonData
+
 ### Strategies
 
 | Strategy         | Command        |
@@ -50,9 +55,9 @@ The different strategies and datasets are listed below
 | Dataset         | Command        |
 |------------------|----------------|
 | CIFAR-10         | CIFAR10       |
-| KAGGLE            | PLANKTON10          |
+| Kaggle          | PLANKTON10          |
 | AILARON            | AILARON          |
-| PASTORE          | PASTORE        |
+| Pastore          | PASTORE        |
 
 
 
