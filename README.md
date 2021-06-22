@@ -1,9 +1,9 @@
 # Active learning core set approach
 
 
-#### To run
+#### To install dependencies
 
-Updatee Anaconda to latest version 
+Update Anaconda to the latest version 
 ```
 conda update conda
 ```
@@ -15,6 +15,8 @@ conda env create -f environment.yml
 conda activate al-env
 ```
 
+#### To run 
+
 Run active learning
 ```
 python3 run.py --strategy <Strategy name> --dataset <Dataset name>
@@ -24,6 +26,8 @@ e.g to run the proposed CIRAL framework on the CIFAR-10 dataset, type the follow
 ```
 python3 run.py --strategy CIRAL --dataset CIFAR10
 ```
+
+#### Parameters
 
 The strategy and dataset parameter is optional and can also be specified in config.py.
 The different strategies and datasets are listed below. 
