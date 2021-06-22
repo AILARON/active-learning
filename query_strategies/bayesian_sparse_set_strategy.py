@@ -1,4 +1,4 @@
-from .strategy import Strategy
+from .Strategy import Strategy
 from .bayesian_utils import *
 import numpy as np
 import torch
@@ -6,10 +6,9 @@ import abc
 
 class Bayesian_Sparse_Set_Strategy(Strategy):
 
-    def __init__(self, ALD, net, args):
-        super().__init__(ALD, net, args)
-        self.args = args
-        self.ALD = ALD
+    def __init__(self, ALD, net, args, logger, **kwargs):
+        super().__init__(ALD, net, args, logger)
+       
         self.model = resnet18(pretrained=False, resnet_size=84)
         self.kwargs = {'metric': 'Acc', 'feature_extractor': self.model, 'num_features': 256}
         self.cs_kwargs = {'gamma': 0}
@@ -17,13 +16,13 @@ class Bayesian_Sparse_Set_Strategy(Strategy):
         self.optim_params = {'num_epochs': 250, 'batch_size': 200, 'initial_lr': 1e-3,
                     'weight_decay': 5e-4, 'weight_decay_theta': 5e-4,
                     'train_transform': self.args['transform'], 'val_transform': self.args['transform']}
-        self.nl = self.load_nl()   
+        self.nl = self.load_nl() 
         
     def query(self, num_query):
         cs = ProjectedFrankWolfe(self.nl, self.ALD, self.num_projections, transform=self.args['transform'], **self.cs_kwargs)
-        print(num_query)
+        self.logger.debug(f"Num query: {num_query}")
         batch = cs.build(num_query)
-        print(len(batch))
+        self.logger.debug(f"Len batch: {len(batch)}")
         return batch
 
     def load_nl(self):
@@ -120,21 +119,21 @@ class ProjectedFrankWolfe(object):
         self._init_build(M, **kwargs)
         w = to_gpu(torch.zeros([len(self.ELn), 1]))
         norm = lambda weights: (self.EL - (self.ELn.t() @ weights).squeeze()).norm()
-        print(f"M: {M}")
+        logger.debug(f"M: {M}")
         counter = 0
         for m in range(M):
             counter += 1
             w = self._step(m, w)
-        print(f"Counter: {counter}")
-        print(f"Len w: {w}")
+        self.logger.debug(f"Counter: {counter}")
+        self.logger.debug(f"Len w: {w}")
         # print(w[w.nonzero()[:, 0]].cpu().numpy())
-        print('|| L-L(w)  ||: {:.4f}'.format(norm(w)))
-        print('|| L-L(w1) ||: {:.4f}'.format(norm((w > 0).float())))
-        print('Avg pred entropy (pool): {:.4f}'.format(self.entropy.mean().item()))
-        print('Avg pred entropy (batch): {:.4f}'.format(self.entropy[w.flatten() > 0].mean().item()))
+        self.logger.debug('|| L-L(w)  ||: {:.4f}'.format(norm(w)))
+        self.logger.debug('|| L-L(w1) ||: {:.4f}'.format(norm((w > 0).float())))
+        self.logger.debug('Avg pred entropy (pool): {:.4f}'.format(self.entropy.mean().item()))
+        self.logger.debug('Avg pred entropy (batch): {:.4f}'.format(self.entropy[w.flatten() > 0].mean().item()))
         try:
             logdet = torch.slogdet(self.model.linear._compute_posterior()[1])[1].item()
-            print('logdet weight cov: {:.4f}'.format(logdet))
+            self.logger.debug('logdet weight cov: {:.4f}'.format(logdet))
         except TypeError:
             pass
 

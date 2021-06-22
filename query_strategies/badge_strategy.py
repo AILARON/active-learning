@@ -1,6 +1,6 @@
 import numpy as np
 from torch.utils.data import DataLoader
-from .strategy import Strategy
+from .Strategy import Strategy
 import pickle
 from scipy.spatial.distance import cosine
 import sys
@@ -25,6 +25,7 @@ import time
 import numpy as np
 import scipy.sparse as sp
 from itertools import product
+from sklearn.cluster import KMeans
 from sklearn.base import BaseEstimator, ClusterMixin, TransformerMixin
 from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.metrics.pairwise import pairwise_distances_argmin_min
@@ -42,45 +43,27 @@ from six import string_types
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.metrics import pairwise_distances
 
-class BadgeSampling(Strategy):
-    def __init__(self, ALD, net, args):
-        super(BadgeSampling, self).__init__(ALD, net, args)
-
+class BADGE_Strategy(Strategy):
+    def __init__(self, ALD, net, args, logger, **kwargs):
+        super().__init__(ALD, net, args, logger)
+        
     def query(self, num_query):
         idx_ulb = self.ALD.index['unlabeled']
         gradEmbedding = self.get_grad_embedding(self.ALD.X[idx_ulb], self.ALD.Y.numpy()[idx_ulb]).numpy()
-        chosen = init_centers(gradEmbedding, num_query)
+        chosen = self.init_centers(gradEmbedding, num_query)
+        '''
+        cluster_learner = KMeans(n_clusters=num_query, init='k-means++')
+        cluster_learner.fit(gradEmbedding)
+        cluster_idxs = cluster_learner.predict(gradEmbedding)
+        centers = cluster_learner.cluster_centers_[cluster_idxs]
+        dis = (gradEmbedding - centers)**2
+        dis = dis.sum(axis=1)
+        try:
+            chosen = np.array([np.arange(gradEmbedding.shape[0])[cluster_idxs==i][dis[cluster_idxs==i].argmin()] for i in range(num_query)])
+        except ValueError:
+            print(ValueError)
+        '''
+                    
         return chosen
 
-# kmeans ++ initialization
-def init_centers(X, K):
-    ind = np.argmax([np.linalg.norm(s, 2) for s in X])
-    mu = [X[ind]]
-    indsAll = [ind]
-    centInds = [0.] * len(X)
-    cent = 0
-    print('#Samps\tTotal Distance')
-    while len(mu) < K:
-        if len(mu) == 1:
-            D2 = pairwise_distances(X, mu).ravel().astype(float)
-        else:
-            newD = pairwise_distances(X, [mu[-1]]).ravel().astype(float)
-            for i in range(len(X)):
-                if D2[i] >  newD[i]:
-                    centInds[i] = cent
-                    D2[i] = newD[i]
-        print(str(len(mu)) + '\t' + str(sum(D2)), flush=True)
-        if sum(D2) == 0.0: pdb.set_trace()
-        D2 = D2.ravel().astype(float)
-        Ddist = (D2 ** 2)/ sum(D2 ** 2)
-        customDist = stats.rv_discrete(name='custm', values=(np.arange(len(D2)), Ddist))
-        ind = customDist.rvs(size=1)[0]
-        mu.append(X[ind])
-        indsAll.append(ind)
-        cent += 1
-    gram = np.matmul(X[indsAll], X[indsAll].T)
-    val, _ = np.linalg.eig(gram)
-    val = np.abs(val)
-    vgt = val[val > 1e-2]
-    return indsAll
 
