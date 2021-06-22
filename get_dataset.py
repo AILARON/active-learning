@@ -63,7 +63,7 @@ def get_CIFAR10(load_data_args):
 
 
 def get_PLANKTON10(load_data_args):
-    data_dir = "../"+load_data_args['data_dir']+"/"
+    data_dir = load_data_args['data_dir']+"/"
     print(data_dir)
     header_file = data_dir + 'header.tfl.txt'
     filename = data_dir + 'image_set.data'
@@ -104,7 +104,7 @@ def get_PLANKTON10(load_data_args):
     return X_tr, Y_tr, X_te, Y_te, X_valid, Y_valid
 
 def get_AILARON(load_data_args):
-    data_dir = "../"+load_data_args['data_dir']+"/"
+    data_dir = load_data_args['data_dir']+"/"
     header_file = data_dir + 'header.tfl.txt'
     filename = 'image_set.data'
     file_ending = load_data_args['file_ending']

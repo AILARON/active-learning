@@ -115,9 +115,9 @@ args = {
             "num_classes": 10,
             'transform': transforms.Compose(
                             [transforms.Grayscale(num_output_channels=3),
-                            #transforms.RandomHorizontalFlip(),
-                            #transforms.RandomVerticalFlip(),
-                            #transforms.RandomAffine(degrees=30,translate=(0.1,0.1),fillcolor=(255,255,255)),
+                            transforms.RandomHorizontalFlip(),
+                            transforms.RandomVerticalFlip(),
+                            transforms.RandomAffine(degrees=30,translate=(0.1,0.1),fillcolor=(255,255,255)),
                             transforms.Resize((32,32)),
                             transforms.ToTensor(),
                             transforms.Normalize(mean=(0.95,), std=(0.2,))]), 
