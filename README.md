@@ -25,8 +25,9 @@ e.g to run the proposed CIRAL framework on the CIFAR-10 dataset, type the follow
 python3 run.py --strategy CIRAL --dataset CIFAR10
 ```
 
-The strategy and dataset parameter is optional and can also be specified in config.py
-The different strategies and datasets are listed below. The Kaggle, AILARON and Pastore datasets needs to be separately downloaded. 
+The strategy and dataset parameter is optional and can also be specified in config.py.
+The different strategies and datasets are listed below. 
+The Kaggle, AILARON and Pastore datasets needs to be separately downloaded. 
 The Kaggle is available with the command
 ```
 kaggle competitions download -c datasciencebowl
