@@ -5,7 +5,7 @@
 
 Install dependencies with Anaconda
 ```
-conda activate active-learning-env
+conda activate al-env
 ```
 
 Run active learning
