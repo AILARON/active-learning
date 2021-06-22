@@ -3,17 +3,32 @@
 
 #### To run
 
+Updatee Anaconda to latest version 
+```
+conda update conda
+```
+
 Install dependencies with Anaconda
 ```
+conda env create -f environment.yml
+
 conda activate al-env
 ```
 
 Run active learning
 ```
-python3 run.py --Strategy <Strategy name>
+python3 run.py --strategy <Strategy name> --dataset <Dataset name>
 ```
 
-The strategy parameter is optional and can also be specified in config.py
+e.g
+
+```
+python3 run.py --strategy CIRAL --dataset CIFAR10
+```
+
+The strategy and dataset parameter is optional and can also be specified in config.py
+The different strategies and datasets are listed below
+### Strategies
 
 | Strategy         | Command        |
 |------------------|----------------|
@@ -28,6 +43,17 @@ The strategy parameter is optional and can also be specified in config.py
 | RANDOM BENCHMARK | RANDOM         |
 | SOFTMAX HYBRID   | SOFTMAX_HYBRID |
 | UNCERTAINTY      | UNCERTAINTY    |
+
+
+### Datasets
+
+| Dataset         | Command        |
+|------------------|----------------|
+| CIFAR-10         | CIFAR10       |
+| KAGGLE            | PLANKTON10          |
+| AILARON            | AILARON          |
+| PASTORE          | PASTORE        |
+
 
 
 ## CIRAL framework
